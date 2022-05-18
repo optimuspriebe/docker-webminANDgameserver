@@ -1,5 +1,5 @@
 # Use the latest Ubuntu image as a parent
-FROM ubuntu:focal
+FROM ubuntu:impish
 MAINTAINER "Johan Pienaar" <johan@pienaarfamilie.nl>
 
 ENV DEBIAN_FRONTEND=noninteractive TZ=Europe/Amsterdam
@@ -24,13 +24,13 @@ RUN echo root:password | chpasswd && \
     echo "Acquire::GzipIndexes \"false\"; Acquire::CompressionTypes::Order:: \"gz\";" >/etc/apt/apt.conf.d/docker-gzip-indexes && \
     update-locale LANG=C.UTF-8 && \
     echo deb https://download.webmin.com/download/repository sarge contrib >> /etc/apt/sources.list && \
-    wget http://www.webmin.com/jcameron-key.asc && \
+    wget -q http://www.webmin.com/jcameron-key.asc -O- && \
     apt-key add jcameron-key.asc && \
     apt-get update && \
     apt-get install -y webmin && \
     apt-get clean
 
-EXPOSE 10000
+EXPOSE 10000 8282
 ENV LC_ALL C.UTF-8
 
 WORKDIR /home
